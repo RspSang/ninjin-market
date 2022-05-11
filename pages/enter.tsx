@@ -44,13 +44,14 @@ export default function Enter() {
           </div>
         </div>
         <form className="mt-8 flex flex-col">
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="input" className="text-sm font-medium text-gray-700">
             {method === "email" ? "メール" : null}
             {method === "phone" ? "携帯番号" : null}
           </label>
           <div className="mt-1">
             {method === "email" ? (
               <input
+                id="input"
                 className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
                 type="email"
                 placeholder="xxx@ninjin.com"
@@ -63,6 +64,7 @@ export default function Enter() {
                   +81
                 </span>
                 <input
+                  id="input"
                   type="number"
                   className="w-full appearance-none rounded-md rounded-l-none border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
                   placeholder="80-1234-5678"
