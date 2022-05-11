@@ -11,11 +11,9 @@ const Home: NextPage = () => {
           <div className="flex space-x-4">
             <div className="h-20 w-20 rounded-md bg-gray-400" />
             <div className="flex flex-col pt-2">
-              <h3 className="text-sm font-medium text-gray-900">
-                iPhone 14
-              </h3>
+              <h3 className="text-sm font-medium text-gray-900">iPhone 14</h3>
               <span className="text-xs text-gray-500">黒</span>
-              <span className="mt-1 font-medium text-gray-900">100,000円</span>
+              <span className="mt-1 font-medium text-gray-900">￥100,000</span>
             </div>
           </div>
           <div className="flex items-end justify-end space-x-2">
