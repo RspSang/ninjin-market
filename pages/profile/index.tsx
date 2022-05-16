@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import Layout from "../../components/layout";
+import Layout from "@components/layout";
 
 const Profile: NextPage = () => {
   return (
@@ -11,7 +11,9 @@ const Profile: NextPage = () => {
           <div className="flex flex-col">
             <span className="font-medium text-gray-900">パク</span>
             <Link href="/profile/edit">
-              <a className="text-sm text-gray-700">プロフィールを更新する &rarr;</a>
+              <a className="text-sm text-gray-700">
+                プロフィールを更新する &rarr;
+              </a>
             </Link>
           </div>
         </div>
@@ -141,9 +143,7 @@ const Profile: NextPage = () => {
             </div>
           </div>
           <div className="mt-4 text-sm text-gray-600">
-            <p>
-              取引が早い
-            </p>
+            <p>取引が早い</p>
           </div>
         </div>
       </div>
