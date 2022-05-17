@@ -12,7 +12,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const { phone, email } = req.body;
-  const user = phone ? { phone: +phone } : email ? { email } : null;
+  const user = phone ? { phone: phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
 
@@ -33,21 +33,21 @@ async function handler(
     },
   });
   if (phone) {
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: process.env.MY_PHONE!,
-      body: `あなたのにんじんマーケット認証コード:${payload}`,
-    });
-    console.log(message);
+    // const message = await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.TWILIO_MSID,
+    //   to: process.env.MY_PHONE!,
+    //   body: `あなたのにんじんマーケット認証コード:${payload}`,
+    // });
+    // console.log(message);
   } else if (email) {
-    const email = await mail.send({
-      from: "akwek33@naver.com",
-      to: "akwek33@naver.com",
-      subject: "あなたのにんじんマーケット認証コード",
-      text: `あなたのにんじんマーケット認証コード${payload}`,
-      html: `<strong>あなたのにんじんマーケット認証コード${payload}</strong>`,
-    });
-    console.log(email);
+    // const email = await mail.send({
+    //   from: "akwek33@naver.com",
+    //   to: "akwek33@naver.com",
+    //   subject: "あなたのにんじんマーケット認証コード",
+    //   text: `あなたのにんじんマーケット認証コード${payload}`,
+    //   html: `<strong>あなたのにんじんマーケット認証コード${payload}</strong>`,
+    // });
+    // console.log(email);
   }
 
   return res.json({

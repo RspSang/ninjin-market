@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/button";
 import Input from "@components/input";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
+import { useRouter } from "next/router";
 
 interface EnterForm {
   email?: string;
   phone?: string;
 }
 
+interface TokenForm {
+  token: string;
+}
+
+interface MutationResult {
+  ok: boolean;
+}
+
 export default function Enter() {
-  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
+  const [enter, { loading, data, error }] =
+    useMutation<MutationResult>("/api/users/enter");
+  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
+    useMutation<MutationResult>("/api/users/confirm");
   const { register, handleSubmit, reset } = useForm<EnterForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
     reset();
@@ -26,75 +40,105 @@ export default function Enter() {
     if (loading) return;
     enter(validForm);
   };
+  const onTokenValid = (validForm: TokenForm) => {
+    if (tokenLoading) return;
+    confirmToken(validForm);
+  };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
   return (
-    <div className="mt-16 px-6">
+    <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">
         🥕にんじんマーケットへようこそ
       </h3>
-      <div className="mt-8">
-        <div>
-          <h5 className="text-center font-medium text-gray-500">
-            ログインする方法を選んでください
-          </h5>
-          <div className="mt-8 grid w-full grid-cols-2 border-b">
-            <button
-              className={cls(
-                "border-b-2 pb-4 font-medium text-gray-500",
-                method === "email"
-                  ? "border-orange-500 text-orange-400"
-                  : "border-transparent"
-              )}
-              onClick={onEmailClick}
-            >
-               メール
-            </button>
-            <button
-              className={cls(
-                "border-b-2 pb-4 font-medium text-gray-500",
-                method === "phone"
-                  ? "border-orange-500 text-orange-400"
-                  : "border-transparent"
-              )}
-              onClick={onPhoneClick}
-            >
-              携帯番号
-            </button>
-          </div>
-        </div>
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="mt-8 flex flex-col space-y-4"
-        >
-          {method === "email" ? (
+      <div className="mt-12">
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
             <Input
-              register={register("email")}
-              name="email"
-              label="メールアドレス"
-              type="email"
-              required
-            />
-          ) : null}
-          {method === "phone" ? (
-            <Input
-              register={register("phone")}
-              name="phone"
-              label="携帯番号"
+              register={tokenRegister("token")}
+              name="token"
+              label="ワンタイムパスワードを入力"
               type="number"
-              kind="phone"
               required
             />
-          ) : null}
-          {method === "email" ? (
-            <Button
-              text={loading ? "ローディング中" : "ログインリンクをもらう"}
-            />
-          ) : null}
-          {method === "phone" ? (
-            <Button
-              text={loading ? "ローディング中" : "ワンタイムパスワードをもらう"}
-            />
-          ) : null}
-        </form>
+            <Button text={tokenLoading ? "ローディング中" : "送信"} />
+          </form>
+        ) : (
+          <>
+            <div>
+              <h5 className="text-center font-medium text-gray-500">
+                ログインする方法を選んでください
+              </h5>
+              <div className="mt-8 grid w-full grid-cols-2 border-b">
+                <button
+                  className={cls(
+                    "border-b-2 pb-4 font-medium text-gray-500",
+                    method === "email"
+                      ? "border-orange-500 text-orange-400"
+                      : "border-transparent"
+                  )}
+                  onClick={onEmailClick}
+                >
+                   メール
+                </button>
+                <button
+                  className={cls(
+                    "border-b-2 pb-4 font-medium text-gray-500",
+                    method === "phone"
+                      ? "border-orange-500 text-orange-400"
+                      : "border-transparent"
+                  )}
+                  onClick={onPhoneClick}
+                >
+                  携帯番号
+                </button>
+              </div>
+            </div>
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="mt-8 flex flex-col space-y-4"
+            >
+              {method === "email" ? (
+                <Input
+                  register={register("email")}
+                  name="email"
+                  label="メールアドレス"
+                  type="email"
+                  required
+                />
+              ) : null}
+              {method === "phone" ? (
+                <Input
+                  register={register("phone")}
+                  name="phone"
+                  label="携帯番号"
+                  type="number"
+                  kind="phone"
+                  required
+                />
+              ) : null}
+              {method === "email" ? (
+                <Button
+                  text={loading ? "ローディング中" : "ログインリンクをもらう"}
+                />
+              ) : null}
+              {method === "phone" ? (
+                <Button
+                  text={
+                    loading ? "ローディング中" : "ワンタイムパスワードをもらう"
+                  }
+                />
+              ) : null}
+            </form>
+          </>
+        )}
         <div className="mt-8">
           <div className="relative">
             <div className="absolute w-full border-t border-gray-300" />
