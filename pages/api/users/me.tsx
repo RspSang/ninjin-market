@@ -3,7 +3,6 @@ import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@libs/server/withSession";
 
-
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
@@ -17,4 +16,6 @@ async function handler(
   });
 }
 
-export default withApiSession(withHandler("GET", handler));
+export default withApiSession(
+  withHandler({ method: "GET", handler })
+);
