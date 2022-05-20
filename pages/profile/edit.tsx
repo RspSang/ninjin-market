@@ -2,11 +2,39 @@ import type { NextPage } from "next";
 import Button from "@components/button";
 import Input from "@components/input";
 import Layout from "@components/layout";
+import useUser from "@libs/client/useUser";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+
+interface EditProfileForm {
+  email?: string;
+  phone?: string;
+  formErrors?: string;
+}
 
 const EditProfile: NextPage = () => {
+  const { user } = useUser();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<EditProfileForm>();
+  useEffect(() => {
+    if (user?.email) setValue("email", user.email);
+    if (user?.phone) setValue("phone", user.phone);
+  }, [user, setValue]);
+  const onValid = ({ email, phone }: EditProfileForm) => {
+    if (email === "" && phone === "") {
+      setError("formErrors", {
+        message: "メールまたは携帯番号のいずれかを入力してください",
+      });
+    }
+  };
   return (
     <Layout canGoBack title="プロフィールの更新">
-      <form className="space-y-4 py-10 px-4">
+      <form onSubmit={handleSubmit(onValid)} className="space-y-4 py-10 px-4">
         <div className="flex items-center space-x-3">
           <div className="h-14 w-14 rounded-full bg-slate-500" />
           <label
@@ -22,14 +50,26 @@ const EditProfile: NextPage = () => {
             />
           </label>
         </div>
-        <Input required label="メールアドレス" name="email" type="email" />
         <Input
-          required
+          register={register("email")}
+          required={false}
+          label="メールアドレス"
+          name="email"
+          type="email"
+        />
+        <Input
+          register={register("phone")}
+          required={false}
           label="携帯番号"
           name="phone"
           type="number"
           kind="phone"
         />
+        {errors.formErrors ? (
+          <span className="my-2 block font-medium text-red-500">
+            {errors.formErrors.message}
+          </span>
+        ) : null}
         <Button text="更新" />
       </form>
     </Layout>
