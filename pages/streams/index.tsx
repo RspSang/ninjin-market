@@ -2,20 +2,14 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import FloatingButton from "@components/floating-button";
 import Layout from "@components/layout";
-import { Stream } from "@prisma/client";
-import useSWR from "swr";
-
-interface StreamsResponse {
-  ok: boolean;
-  streams: Stream[];
-}
+import usePage from "@components/infinite-scroll";
 
 const Streams: NextPage = () => {
-  const { data } = useSWR<StreamsResponse>(`/api/streams`);
+  const page = usePage(`/api/streams`);
   return (
     <Layout hasTabBar title="ライブ">
       <div className=" space-y-4 divide-y-[1px]">
-        {data?.streams.map((stream) => (
+        {page?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="block px-4  pt-4">
               <div className="aspect-video w-full rounded-md bg-slate-300 shadow-sm" />

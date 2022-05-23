@@ -58,6 +58,7 @@ async function handler(
           lte: parsedLongitude + 0.01,
         },
       },
+      take: 10,
     });
     res.json({
       ok: true,

@@ -8,6 +8,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const {
+    query: { page },
     session: { user },
     body: { name, price, description },
   } = req;
@@ -26,8 +27,13 @@ async function handler(
     });
     res.json({ ok: true, streams });
   } else if (req.method === "GET") {
-    const streams = await client.stream.findMany({});
-    res.json({ ok: true, streams });
+    const take = 10;
+    const skip = (+page - 1) * 10;
+    const list = await client.stream.findMany({
+      take,
+      skip,
+    });
+    res.json({ ok: true, list });
   }
 }
 
