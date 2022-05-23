@@ -12,7 +12,7 @@ async function handler(
     body: { name, price, description },
   } = req;
   if (req.method === "POST") {
-    const stream = await client.stream.create({
+    const streams = await client.stream.create({
       data: {
         name,
         price,
@@ -24,9 +24,10 @@ async function handler(
         },
       },
     });
-    res.json({ ok: true, stream });
-  }
-  if (req.method === "GET") {
+    res.json({ ok: true, streams });
+  } else if (req.method === "GET") {
+    const streams = await client.stream.findMany({});
+    res.json({ ok: true, streams });
   }
 }
 
