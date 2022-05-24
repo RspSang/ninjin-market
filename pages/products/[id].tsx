@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
+import Image from "next/image";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -34,12 +35,17 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4 py-4">
         <div className="mb-8">
-          <img
-            src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${data?.product?.image}/productDetail`}
-            className="h-96 rounded-md bg-slate-300"
-          />
+          <div className="relative pb-80">
+            <Image
+              layout="fill"
+              src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${data?.product?.image}/productDetail`}
+              className="rounded-md bg-slate-300 object-center"
+            />
+          </div>
           <div className="flex cursor-pointer items-center space-x-3 border-t border-b py-3">
-            <img
+            <Image
+              width={48}
+              height={48}
               src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${data?.product?.user.avatar}/avatar`}
               className="h-12 w-12 rounded-full bg-slate-300"
             />
@@ -116,7 +122,9 @@ const ItemDetail: NextPage = () => {
               <Link href={`/products/${product.id}`} key={product.id}>
                 <a>
                   <div>
-                    <img
+                    <Image
+                      width={264}
+                      height={224}
                       src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${product?.image}/relatedProducts`}
                       className="mb-4 h-56 w-full rounded-md bg-slate-300"
                     />

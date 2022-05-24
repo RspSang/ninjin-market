@@ -8,6 +8,7 @@ import useMutation from "@libs/client/useMutation";
 import { useEffect, useState } from "react";
 import { Product } from "@prisma/client";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 interface UploadProductForm {
   photo: FileList;
@@ -68,12 +69,15 @@ const Upload: NextPage = () => {
       <form className="space-y-4 p-4" onSubmit={handleSubmit(onValid)}>
         <div>
           {photoPreview ? (
-            <img
-              src={photoPreview}
-              className="h-46 w-full rounded-md text-gray-600"
-            />
+            <div className="relative pb-80">
+              <Image
+                layout="fill"
+                src={photoPreview}
+                className="w-full rounded-md object-cover text-gray-600"
+              />
+            </div>
           ) : (
-            <label className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500">
+            <label className="flex h-80 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500">
               <svg
                 className="h-12 w-12"
                 stroke="currentColor"
