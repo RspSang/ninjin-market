@@ -34,9 +34,15 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4 py-4">
         <div className="mb-8">
-          <div className="h-96 rounded-md bg-slate-300" />
+          <img
+            src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${data?.product?.image}/productDetail`}
+            className="h-96 rounded-md bg-slate-300"
+          />
           <div className="flex cursor-pointer items-center space-x-3 border-t border-b py-3">
-            <div className="h-12 w-12 rounded-full bg-slate-300" />
+            <img
+              src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${data?.product?.user.avatar}/avatar`}
+              className="h-12 w-12 rounded-full bg-slate-300"
+            />
             <div>
               <p className="text-sm font-medium text-gray-700">
                 {data?.product?.user?.name}
@@ -110,7 +116,10 @@ const ItemDetail: NextPage = () => {
               <Link href={`/products/${product.id}`} key={product.id}>
                 <a>
                   <div>
-                    <div className="mb-4 h-56 w-full rounded-md bg-slate-300" />
+                    <img
+                      src={`https://imagedelivery.net/GSDuBVO5Xp3QfdrHmnLc2A/${product?.image}/relatedProducts`}
+                      className="mb-4 h-56 w-full rounded-md bg-slate-300"
+                    />
                     <h3 className="-mb-1 text-gray-700">{product.name}</h3>
                     <span className="text-sm font-medium text-gray-900">
                       ￥{product.price}
